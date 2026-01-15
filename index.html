@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gadget Catalog - Landing Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #0077b6;
+            --light-blue: #00b4d8;
+            --dark-blue: #023e8a;
+            --orange: #ff9f1c;
+            --bg-light: #f4f9ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-light); color: #333; scroll-behavior: smooth; }
+
+        /* 1. Top Bar Affiliate */
+        .top-bar {
+            background: var(--dark-blue);
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .top-bar a { color: var(--orange); text-decoration: none; font-weight: bold; margin-left: 5px; }
+        .top-bar a:hover { text-decoration: underline; }
+
+        /* 2. Hero Header with Background Image */
+        header {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            /* Ganti URL di bawah dengan link gambar yang Anda miliki */
+            background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        /* Overlay gelap agar tulisan terbaca */
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Hitam transparan 50% */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+
+        .hero-content p { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
+        .hero-content h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; line-height: 1.1; }
+        
+        .btn-cek {
+            background: var(--orange);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn-cek:hover { transform: translateY(-3px); background: #e68a00; }
+
+        /* 3. Categories */
+        .section-title { text-align: center; margin: 50px 0 30px; color: var(--dark-blue); font-size: 2rem; font-weight: 700; }
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 10%;
+            flex-wrap: wrap;
+        }
+        .cat-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .cat-card:hover { transform: scale(1.03); }
+        .cat-card.blue-light { background: #48cae4; }
+        .cat-card.blue-mid { background: #0077b6; }
+        .cat-card.blue-dark { background: #03045e; }
+
+        /* 4. Banner Space */
+        .banner-row { padding: 40px 10%; }
+        .banner-box {
+            background: #eef6ff;
+            border: 0px dashed var(--light-blue);
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        /* 5. Product Grid */
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 0 10% 50px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+        .product-card:hover { transform: translateY(-10px); }
+        .product-img { width: 100%; height: 360px; object-fit: cover; background: #f0f0f0; }
+        .stars { color: #ffcc00; margin: 15px 0 5px; }
+        .product-info h3 { margin-bottom: 5px; color: #222; }
+        .product-info p { color: #666; font-size: 0.9rem; padding: 0 15px; }
+        
+        .get-now {
+            background: var(--light-blue);
+            color: white;
+            padding: 12px 0;
+            text-decoration: none;
+            display: block;
+            margin: 20px auto;
+            width: 85%;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        /* 6. Footer */
+        footer {
+            background: white;
+            padding: 50px 10%;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .social-icons i { font-size: 24px; margin-left: 20px; color: var(--primary-blue); cursor: pointer; }
+
+        /* 7. Back to Top */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--orange);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 999;
+            font-size: 20px;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.2rem; }
+            header { height: 400px; }
+            footer { text-align: center; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <h4>
+    Kesempatan Terbatas! Join Affiliate &amp; Dapatkan Komisi.
+    <a
+      href="https://accesstrade.co.id/publisher/register?referral_id=jf5kYyS%2FTMgBD8T3js0S1A%3D%3D"
+      target="_blank"
+      >Klik Join Affiliate <i class="fas fa-external-link-alt"></i
+    ></a>
+  </h4>
+    </div>
+
+    <header>
+        <div class="hero-content">
+            <p>Gadget Catalog 2026</p>
+            <h1>Dapatkan Gadget<br>Pilihanmu Disini</h1>
+            <a href="#featured" class="btn-cek">Cek Produk Rekomendasi</a>
+        </div>
+    </header>
+
+    <h2 class="section-title">OFFICIAL STORE </h2><p align="center">
+  <span style="color: #073763; font-size: 18px;"
+    ><b
+      >Kunjungi dan Dapatkan Gadget Idaman - Brand New &amp; Original di
+      Official Store berikut ini :</b
+    ></span
+  >
+</p>
+	 
+	
+    <div class="categories">
+        <div class="cat-card blue-light">
+            <h3>SMARTPHONE</h3>
+            <p><a href="https://atid.me/go/EM4Y1gsk" rel="nofollow" target="_blank"><b><span style="color: #f3f3f3;">SAMSUNG OFFICIAL SHOP</span></b></a>
+			</p>
+        </div>
+        <div class="cat-card blue-mid">
+            <h3>COMPUTER</h3>
+            <p><a href="https://atid.me/go/HPgLXAew" rel="nofollow" target="_blank"><b><span style="color: #f3f3f3;">ASUS STORE.ID</span></b></a>
+			</p>
+        </div>
+        <div class="cat-card blue-dark">
+            <h3>ACCESSORIES</h3>
+            <p><a href="https://atid.me/00n7d5002ah1" rel="nofollow" target="_blank"><b><span style="color: #f3f3f3;">BASEUS OFFICIAL SHOP</span></b></a>
+			</p>
+        </div>
+    </div>
+
+    <div class="banner-row">
+        <div class="banner-box">
+            <a href="https://atid.me/adv.php?rk=00oi0n002ah1" target="_blank"
+      ><img src="https://imp.accesstra.de/img.php?rk=00oi0n002ah1" border="0"
+    /></a>
+        </div>
+    </div>
+
+    <h2 id="featured" class="section-title">REKOMENDASI PRODUK</h2>
+    <div class="product-container">
+        <div class="product-card">
+    <img
+      alt="Samsung"
+      class="product-img"
+      src="https://images.samsung.com/is/image/samsung/p6pim/id/feature/166456121/id-feature-ip54-dust-and-water-protection-548603214?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="fas fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>SAMSUNG A07</h3>
+      <p>
+        <b
+          >Untuk main game, streaming, & lakukan multitasking secara
+          bersamaan.</b
+        >
+      </p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/wP1l9IMN" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Xiaomi"
+      class="product-img"
+      src="https://i02.appmifile.com/497_operator_sg/27/09/2024/1f6b1212c7791b2fc370346b56545837.png?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="fas fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>XIAOMI 14T PRO</h3>
+      <p>
+        <b
+          >Kuasai pencahayaan layaknya fotografer, tangkap gambar jernih pada
+          malam hari</b
+        >
+      </p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/pakO0La3" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Vivo"
+      class="product-img"
+      src="https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/product/1760956294320/zip/img/pc/vivo-v60-lite-with-ip65-waterproof-and-dustproof-rating.png?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="far fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>VIVO V60 Lite</h3>
+      <p>
+        Desain Kamera Modul Minimalis Lebih Trendy dan Elegan|
+        <b>50MP Sony Camera - 6500mAh +90W FlashCharge</b>
+      </p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/IOQynEiN" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Samsung"
+      class="product-img"
+      src="https://images.samsung.com/is/image/samsung/p6pim/id/feature/166784191/id-feature-for-your-clearer-face-to-face-moments-550203562?$FB_TYPE_A_JPG$?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="fas fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>GALAXI TAB A11+</h3>
+      <p>
+        <b
+          >Galaxy Tab A11+ hadir dengan kamera depan 5 MP untuk panggilan video
+          yang lebih tajam dan jernih.</b
+        >
+      </p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/kPGfIMLj" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Realme"
+      class="product-img"
+      src="https://static2.realme.net/images/realme-gt-7-5g/1747369514616d1397a1374574fb6a9c521b7cdf74772.webp?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="fas fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>REALME GT7</h3>
+      <p>
+        Jangan Ragu, ini <b>Fitur</b> Terbaiknya: <b>Power</b> That
+        <b>Never Stop</b>, sudah <b>AI</b>, <b>Foto-foto</b> yang Luar Biasa,
+        dan banyak lagi.
+      </p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/3BYR2Mff" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Oppo"
+      class="product-img"
+      src="https://down-id.img.susercontent.com/file/id-11134207-8224v-miz9cwfcgohsac?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="far fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>OPPO FIND X9 Series</h3>
+      <p>
+        Fitur unggulan: <b>Kamera 200 MP </b>w/.True Color, Baterai
+        <b>7.500 mAh</b>, Layar bezel <b>1,15 mm</b>, dan Chipset
+        <b>MediaTek Dimensity 9500 dan ColorOS 16</b>
+      </p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/tQTMQNO5" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Baseus"
+      class="product-img"
+      src="https://down-id.img.susercontent.com/file/id-11134207-7ra0g-mdpi6p5r6qa4ba@resize_w384_nl.webp?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="far fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>BASEUS BOWIE MC1 PRO</h3>
+      <p>Open Ear TWS Hi-Res LDAC Earbuds Sport Work Headset Anting Bluetooth OWS Super Bass Earphone Clip Wireless</p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/VekB1nb3" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Baseus FM12 Charger"
+      class="product-img"
+      src="https://down-id.img.susercontent.com/file/id-11134208-81zto-meo1ka4wouf972@resize_w1750_nl.webp?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="fas fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>POWER BANK BASEUS FM12</h3>
+      <p>Qi2 10000mAh 22.5W Magnetic Mini Wireless Fast Charging Powerbank | Power Bank Fast Charging</p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/sKuPsri9" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Baseus Headphone D05"
+      class="product-img"
+      src="https://down-id.img.susercontent.com/file/id-11134207-7rbk0-majm9ekww9kb8c?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="far fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>HEADPHONE BASEUS BOWIE D05</h3>
+      <p>Bass Upgrade Edition 2025 Wireless Bluetooth 5.3 Wired Headset</p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/eDuPMad0" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="BASEUS CHARGER"
+      class="product-img"
+      src="https://down-id.img.susercontent.com/file/id-11134207-81ztq-mf2cb3mrxp1o23?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="far fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>BASEUS CHARGER CUBE USB</h3>
+      <p>Fast Charging 18W Android Iphone EU QC 3.0 PPS AFC FCP Charging</p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/Y2D7SS38" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="BASEUS CHARGER"
+      class="product-img"
+      src="https://down-id.img.susercontent.com/file/id-11134207-7rasg-m30125yuyipn4c@resize_w900_nl.webp?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="fas fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>BASEUS POWER BANK LIPOW</h3>
+      <p>10000mAh & 20000mAh 22.5W Dual-Cable Type-C Lighting Digital Display</p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/VekB1nb3" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+
+  <div class="product-card">
+    <img
+      alt="Baseus Cable Data"
+      class="product-img"
+      src="https://down-id.img.susercontent.com/file/id-11134207-7rbk0-m9l9m5ee90s34d?w=500"
+    />
+    <div class="stars">
+      <i class="fas fa-star"></i
+      ><i class="fas fa-star"
+        ><i class="fas fa-star"></i
+        ><i class="fas fa-star"><i class="far fa-star"></i> </i
+      ></i>
+    </div>
+    <div class="product-info">
+      <h3>BASEUS CABLE DATA</h3>
+      <p>Crystal Series Type-C to Type-C 100W QC 4.0 Fast Charging 1.2m & 2m</p>
+    </div>
+    <a class="get-now" href="https://atid.me/go/vJarDaXk" target="_blank"
+      >GET IT NOW <i class="fas fa-chevron-right"></i
+    ></a>
+  </div>
+		
+    </div>
+	
+	<div class="banner-row">
+        <div class="banner-box">
+            <a href="https://atid.me/adv.php?rk=00ny9n002ah1" target="_blank"
+      ><img src="https://imp.accesstra.de/img.php?rk=00ny9n002ah1" border="0"/></a>
+        </div>
+    </div>
+
+    <footer>
+        <div>
+            <p><strong>© 2026 Info Gadget.</strong> Seluruh Hak Cipta Dilindungi.</p>
+        </div>
+        <div class="social-icons">
+            <a href="https://instagram.com/paid.inshop" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://web.facebook.com/anne.756891" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://t.me/adm_blogxyz" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+    </footer>
+
+    <button id="backToTop" title="Kembali ke Atas">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Logika Tombol Back to Top
+        const btt = document.getElementById("backToTop");
+
+        window.onscroll = function() {
+            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+                btt.style.display = "flex";
+            } else {
+                btt.style.display = "none";
+            }
+        };
+
+        btt.addEventListener("click", function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+    </script>
+</body>
+</html>
